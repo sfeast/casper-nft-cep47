@@ -183,12 +183,24 @@ fn call() {
         "meta" => meta
     };
 
+    /*******comment this section out when building future versions of the contract*********/
+    let contract_access_uref: String = format!("{}_access_uref", contract_name);
     let (contract_hash, _) = storage::new_contract(
         get_entry_points(),
         None,
         Some(String::from("contract_package_hash")),
-        None,
+        Some(contract_access_uref),
     );
+    /***************************************************************************************/
+
+    /*******uncomment this section when building future versions of the contract************/
+    // let contract_package_hash = runtime::get_key("contract_package_hash")
+    //     .unwrap_or_revert()
+    //     .into_hash()
+    //     .unwrap()
+    //     .into();
+    // let (contract_hash, _contract_version) = storage::add_contract_version(contract_package_hash, get_entry_points(), Default::default());
+    /***************************************************************************************/
 
     let package_hash: ContractPackageHash = ContractPackageHash::new(
         runtime::get_key("contract_package_hash")
